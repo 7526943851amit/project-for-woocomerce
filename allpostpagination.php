@@ -141,3 +141,31 @@ jQuery(document).ready(function($) {
 get_footer();
 
 ?>
+
+
+
+function custom_pagination_handler() {
+    $page = $_POST['page'];
+
+    $args = array(
+        'post_type' => 'ai_tools',
+        'post_status' => 'publish',
+        'posts_per_page' => 3,
+        'paged' => $page,
+        'orderby' => 'title',
+        'order' => 'ASC',
+    );
+
+    $loop = new WP_Query($args);
+
+    while ($loop->have_posts()) : $loop->the_post();
+        the_title();
+        the_content();
+    endwhile;
+
+    wp_die();
+}
+
+add_action('wp_ajax_custom_pagination', 'custom_pagination_handler');
+add_action('wp_ajax_nopriv_custom_pagination', 'custom_pagination_handler');
+functions.php in code
